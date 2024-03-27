@@ -26,24 +26,23 @@ public class Controller : MonoBehaviour
 	// Rotation Management
 	private static readonly Vector3 rotationAxis = new Vector3(10.0F, 10.0F, 10.0F);
 	private int speed = 1;
-	private static readonly int speedMax= 25;
+	private static readonly int speedMax = 25;
 	#endregion
 
 	#region Controller Functions
 	/// <summary> Start is called before the first frame update. </summary>
 	private void Start()
-	{ 
+	{
 		material = GetComponent<Renderer>().material;
 		material.SetColor(ColNameId, colors[colPos]);
 	}
 
 	///<summary> Update is called once per frame. </summary>
 	void Update()
-    {
+	{
 		// Check Escape Input
 		if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
 
-		
 		// Change Scale
 		if (Input.GetKeyDown(KeyCode.RightArrow)) {
 			scale += 0.2F;
