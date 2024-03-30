@@ -49,6 +49,16 @@ jobs:
 
   Builds:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false  # Continue to the next element in matrix if fail instead of stop all
+      matrix:
+        targetPlatform:
+          - StandaloneOSX       # Build a macOS standalone (Intel 64-bit).
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneLinux64   # Build a Linux 64-bit standalone.
+          - iOS                 # Build an iOS player.
+          - WebGL               # WebGL.
+
     steps:
       # Checkout
       - name: Checkout
@@ -64,10 +74,14 @@ jobs:
             Library-
 
       # Builds
-      - name: Build project
+      - name: Build project for ${{ matrix.testMode }}
         uses: game-ci/unity-builder@v4
-
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: ${{ matrix.targetPlatform }}
           allowDirtyBuild: true
-      # Output
+
+      # Upload artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Build (${{ matrix.targetPlatform }})
+          path: build/${{ matrix.targetPlatform }}
