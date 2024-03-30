@@ -11,7 +11,7 @@
 
 using UnityEngine;
 
-public class Controller : MonoBehaviour
+public class CubeController : MonoBehaviour
 {
 	#region Members
 	// Color Management

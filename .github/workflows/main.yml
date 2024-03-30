@@ -4,7 +4,16 @@ on: push
 
 jobs:
   Tests:
+    name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false    # Continue to the next element in matrix if fail instead of stop all
+      matrix:
+        testMode:
+          - EditMode
+          - PlayMode
+
+    # Job Steps
     steps:
       # Checkout
       - name: Checkout
@@ -20,6 +29,18 @@ jobs:
             Library-
 
       # Tests
+      - uses: game-ci/unity-test-runner@v4
+        id: testRunner
+        with:
+          testMode: ${{ matrix.testMode }}
+          checkName: ${{ matrix.testMode }} test results
+          #githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # Upload artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Test results (${{ matrix.testMode }})
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
 
   Builds:
     runs-on: ubuntu-latest
